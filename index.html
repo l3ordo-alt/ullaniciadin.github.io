@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üniversite Sınav Platformu - Asya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6200ee, #9c4dff);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #fff, #ffe0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-sub {
+            font-size: 14px;
+            opacity: 0.9;
+            font-style: italic;
+            margin-left: 5px;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 700px;
+        }
+
+        /* Sol Menü - %30 */
+        .menu-panel {
+            width: 30%;
+            background: #f8f9fa;
+            border-right: 2px solid #6200ee;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        /* Sağ Soru Alanı - %70 */
+        .soru-panel {
+            width: 70%;
+            background: #f5f5f5;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        .menu-baslik {
+            color: #6200ee;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #6200ee;
+        }
+
+        .menu-alt-baslik {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Accordion Menü Stili */
+        .accordion-btn {
+            background: #6200ee;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-btn:hover {
+            background: #4500b5;
+        }
+
+        .accordion-btn .arrow {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .accordion-btn.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #6200ee;
+        }
+
+        .accordion-content.show {
+            display: block;
+        }
+
+        .yukleme-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-grup {
+            width: 100%;
+        }
+
+        .form-grup label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-grup select, .form-grup input[type="file"], .form-grup input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .btn {
+            background: #6200ee;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .btn:hover {
+            background: #4500b5;
+        }
+
+        .btn-secondary {
+            background: #4caf50;
+        }
+
+        .btn-secondary:hover {
+            background: #388e3c;
+        }
+
+        .btn-danger {
+            background: #f44336;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        .btn-warning {
+            background: #ff9800;
+        }
+
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+
+        .btn-home {
+            background: #9c27b0;
+        }
+
+        .btn-home:hover {
+            background: #7b1fa2;
+        }
+
+        .btn-info {
+            background: #2196f3;
+        }
+
+        .btn-info:hover {
+            background: #1976d2;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+            width: auto;
+            margin-left: 5px;
+        }
+
+        .json-ornek {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .json-ornek pre {
+            margin: 0;
+        }
+
+        .secim-bilgi {
+            background: #e0e0e0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #6200ee;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dersler, .sinav-turleri, .yil-listesi {
+            margin-bottom: 20px;
+        }
+
+        .ders-btn, .tur-btn, .yil-btn {
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #6200ee;
+            background: white;
+            color: #6200ee;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: left;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ders-btn:hover, .tur-btn:hover, .yil-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .ders-btn.active, .tur-btn.active, .yil-btn.active {
+            background: #6200ee;
+            color: white;
+        }
+
+        .yil-icerik {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .yil-ad {
+            flex: 1;
+        }
+
+        .sil-btn {
+            background: none;
+            border: none;
+            color: #f44336;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 5px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .sil-btn:hover {
+            opacity: 1;
+            color: #d32f2f;
+        }
+
+        .yil-btn.active .sil-btn {
+            color: white;
+        }
+
+        .yeni-yil-input {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .yeni-yil-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .yeni-yil-input .btn {
+            width: auto;
+            padding: 10px 15px;
+            margin-top: 0;
+        }
+
+        .puan-bar {
+            background: white;
+            border-top: 2px solid #6200ee;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .puan-bilgi {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .puan {
+            color: #6200ee;
+            font-size: 24px;
+        }
+
+        .dogru-sayi {
+            color: #4caf50;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .yanlis-sayi {
+            color: #f44336;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .bos-sayi {
+            color: #999;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .soru-sayi {
+            color: #666;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+
+        .soru-kutu {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .soru-metni {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .cevap-satiri {
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+            font-size: 16px;
+        }
+
+        .cevap-satiri:hover {
+            background: #f0f0f0;
+        }
+
+        .cevap-satiri.dogru {
+            background: #4caf50;
+            color: white;
+            border-color: #388e3c;
+        }
+
+        .cevap-satiri.yanlis {
+            background: #f44336;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #ddd;
+        }
+
+        .veri-yonetimi {
+            margin-top: 20px;
+            border-top: 1px dashed #6200ee;
+            padding-top: 20px;
+        }
+
+        .istatistik-icon {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Logo - Asya için özel tasarım -->
+            <div class="logo" id="logo">
+                <span class="logo-icon">👧</span>
+                <span class="logo-text">ASYA</span>
+                <span class="logo-sub">⭐</span>
+            </div>
+            
+            <div class="header-title">
+                <h1>🎓 Üniversite Sınav Platformu</h1>
+                <p>4 Yanlış 1 Doğruyu Götürür | Her Soru 5 Puan</p>
+            </div>
+        </div>
+
+        <!-- Ana İçerik - 2 Kolonlu -->
+        <div class="main-content">
+            <!-- SOL MENÜ - %30 -->
+            <div class="menu-panel">
+                <div class="menu-baslik">📋 MENÜ</div>
+                
+                <!-- Seçim Bilgi -->
+                <div class="secim-bilgi" id="secimBilgi">
+                    👆 Lütfen bir ders seçin
+                </div>
+                
+                <!-- Dersler -->
+                <div class="menu-alt-baslik">📚 Dersler</div>
+                <div class="dersler" id="dersler">
+                    <button class="ders-btn" data-ders="0">📊 Görsel Programlama</button>
+                    <button class="ders-btn" data-ders="1">📈 Karar Teorisi ve Analizi</button>
+                    <button class="ders-btn" data-ders="2">🤖 Makine Öğrenmesi</button>
+                    <button class="ders-btn" data-ders="3">📱 Mobil Programlama</button>
+                </div>
+                
+                <!-- Sınav Türleri (başlangıçta gizli) -->
+                <div id="turBolumu" style="display: none;">
+                    <div class="menu-alt-baslik">📝 Sınav Türü</div>
+                    <div class="sinav-turleri" id="sinavTurleri">
+                        <button class="tur-btn" data-tur="vize">📝 Vize</button>
+                        <button class="tur-btn" data-tur="final">📚 Final</button>
+                        <button class="tur-btn" data-tur="but">🔄 Bütünleme</button>
+                    </div>
+                </div>
+                
+                <!-- Yıllar (başlangıçta gizli) -->
+                <div id="yilBolumu" style="display: none;">
+                    <div class="menu-alt-baslik">📅 Yıl</div>
+                    <div class="yil-listesi" id="yilListesi">
+                        <!-- Yıllar dinamik olarak eklenecek -->
+                    </div>
+                </div>
+                
+                <!-- JSON Yükleme ve Veri Yönetimi - Accordion Menü -->
+                <button class="accordion-btn" id="jsonAccordionBtn">
+                    <span>📤 JSON Yükleme ve Veri Yönetimi</span>
+                    <span class="arrow">▼</span>
+                </button>
+                
+                <div class="accordion-content" id="jsonAccordionContent">
+                    <!-- JSON Yükleme Formu -->
+                    <div class="yukleme-form">
+                        <div class="form-grup">
+                            <label>Ders:</label>
+                            <select id="dersSecim">
+                                <option value="0">📊 Görsel Programlama</option>
+                                <option value="1">📈 Karar Teorisi ve Analizi</option>
+                                <option value="2">🤖 Makine Öğrenmesi</option>
+                                <option value="3">📱 Mobil Programlama</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-grup">
+                            <label>Sınav Türü:</label>
+                            <select id="turSecim">
+                                <option value="vize">📝 Vize</option>
+                                <option value="final">📚 Final</option>
+                                <option value="but">🔄 Bütünleme</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-grup">
+                            <label>Yıl:</label>
+                            <input type="number" id="yilInput" value="2023" min="2000" max="2030">
+                        </div>
+                        
+                        <div class="form-grup">
+                            <label>JSON Dosyası:</label>
+                            <input type="file" id="jsonDosya" accept=".json">
+                        </div>
+                        
+                        <button class="btn" id="jsonYukleBtn">📤 JSON Yükle ve Kaydet</button>
+                        <button class="btn btn-secondary" id="ornekGosterBtn">📋 Örnek JSON</button>
+                        
+                        <!-- Örnek JSON Gösterimi -->
+                        <div id="ornekJson" class="json-ornek" style="display: none;">
+                            <pre>
+[
+  {
+    "soru": "Soru metni buraya yazılır?",
+    "cevaplar": [
+      "A) Şık 1",
+      "B) Şık 2", 
+      "C) Doğru Şık",
+      "D) Şık 4",
+      "E) Şık 5"
+    ],
+    "dogru": "C) Doğru Şık"
+  }
+]
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Veri Yönetimi Butonları -->
+                    <div class="veri-yonetimi">
+                        <div class="menu-alt-baslik" style="margin-top: 0;">🔧 Veri Yönetimi</div>
+                        <button class="btn btn-warning" id="verileriKaydet">💾 Verileri Şimdi Kaydet</button>
+                        <button class="btn btn-secondary" id="verileriYukle">📂 Kayıtlı Verileri Yükle</button>
+                        <button class="btn btn-danger" id="verileriTemizle">🗑️ Tüm Verileri Sil</button>
+                        <button class="btn btn-danger" id="sorulariTemizle">🗑️ Bu Sınavdaki Soruları Temizle</button>
+                    </div>
+                </div>
+                
+                <!-- Ana Sayfa Butonu (her zaman görünür) -->
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-home" id="anasayfaBtn">🏠 Ana Sayfaya Dön</button>
+                </div>
+                
+                <div style="margin-top: 15px; font-size: 12px; color: #666; text-align: center;">
+                    ✅ Önce bir ders seçin, sonra sınav türü ve yıl seçenekleri açılır
+                </div>
+            </div>
+            
+            <!-- SAĞ SORU ALANI - %70 -->
+            <div class="soru-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div class="menu-baslik" style="margin-bottom: 0;">📝 SORULAR</div>
+                    <div>
+                        <span class="soru-sayi" id="soruSayisi">0 soru</span>
+                        <button class="btn" id="sinaviSifirla" style="width: auto; padding: 8px 15px;">🔄 Cevapları Sıfırla</button>
+                    </div>
+                </div>
+                
+                <!-- Sorular burada gösterilecek -->
+                <div id="sinavAlani">
+                    <div style="text-align: center; padding: 100px 20px; color: #999; background: #f8f9fa; border-radius: 8px; font-size: 18px;">
+                        👈 Sol menüden bir ders seçin<br><br>
+                        Sonra sınav türü ve yıl seçerek soruları görmeye başlayın
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Puan Bar -->
+        <div class="puan-bar">
+            <div class="puan-bilgi">
+                <div class="puan">
+                    <span class="istatistik-icon">📊</span> Net: <span id="puanDegeri">0.00</span>
+                </div>
+                <div class="dogru-sayi">
+                    <span class="istatistik-icon">✅</span> Doğru: <span id="dogruSayisi">0</span>
+                </div>
+                <div class="yanlis-sayi">
+                    <span class="istatistik-icon">❌</span> Yanlış: <span id="yanlisSayisi">0</span>
+                </div>
+                <div class="bos-sayi">
+                    <span class="istatistik-icon">⭕</span> Boş: <span id="bosSayisi">0</span>
+                </div>
+            </div>
+            <div>
+                <span>Her soru 5 puan | 4 yanlış 1 doğruyu götürür</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            ⚡ JSON yükleyerek soru ekleyin | Her sınav için istediğiniz kadar soru | Asya'ya özel 🎀
+        </div>
+    </div>
+
+    <script>
+        // Ders isimleri
+        const dersIsimleri = [
+            "Görsel Programlama",
+            "Karar Teorisi ve Analizi",
+            "Makine Öğrenmesi",
+            "Mobil Programlama"
+        ];
+
+        // Sınav türü isimleri
+        const turIsimleri = {
+            vize: "Vize",
+            final: "Final",
+            but: "Bütünleme"
+        };
+
+        // Local Storage anahtarı
+        const STORAGE_KEY = 'sinavPlatformuVerileri';
+
+        // Başlangıç verileri (örnek)
+        const baslangicVerileri = {
+            0: { vize: {}, final: {}, but: {} },
+            1: { vize: {}, final: {}, but: {} },
+            2: { vize: {}, final: {}, but: {} },
+            3: { 
+                vize: {
+                    "2023": [
+                        {
+                            soru: "void gorunum {{bool kalin = false, bool gizli = false}} {...} yukarıdaki şekilde tanımlanmış gorunum fonksiyonu gorunum(kalin: true); şeklinde çağrılırsa aşağıdakilerden hangisi doğrudur?",
+                            cevaplar: [
+                                "A) gizli parametresi null değeri alır.",
+                                "B) gizli parametresi true değeri alır.",
+                                "C) gizli parametresi verilmediği için kod derlenemez, sentaks hatası verir.",
+                                "D) gizli parametresi false değeri alır.",
+                                "E) gizli parametresinin değeri daha sonradan gorunum.gizli = true; şeklinde atanır."
+                            ],
+                            dogru: "D) gizli parametresi false değeri alır."
+                        }
+                    ], 
+                    final: {}, 
+                    but: {} 
+                }
+            }
+        };
+
+        // SORU HAVUZU - Local Storage'dan yükle veya başlangıç verilerini kullan
+        let soruDatabase;
+
+        // Local Storage'dan verileri yükle
+        function verileriLocalStoragedanYukle() {
+            const kayitliVeriler = localStorage.getItem(STORAGE_KEY);
+            if (kayitliVeriler) {
+                try {
+                    soruDatabase = JSON.parse(kayitliVeriler);
+                    console.log('Veriler localStorage\'dan yüklendi');
+                } catch (e) {
+                    console.error('Veriler yüklenirken hata:', e);
+                    soruDatabase = JSON.parse(JSON.stringify(baslangicVerileri));
+                }
+            } else {
+                soruDatabase = JSON.parse(JSON.stringify(baslangicVerileri));
+                verileriLocalStorageaKaydet();
+            }
+        }
+
+        // Verileri Local Storage'a kaydet
+        function verileriLocalStorageaKaydet() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(soruDatabase));
+                console.log('Veriler localStorage\'a kaydedildi');
+            } catch (e) {
+                console.error('Veriler kaydedilirken hata:', e);
+            }
+        }
+
+        // Başlangıçta verileri yükle
+        verileriLocalStoragedanYukle();
+
+        // Aktif seçimler (başlangıçta boş)
+        let aktifDers = null;
+        let aktifTur = null;
+        let aktifYil = null;
+        let kullaniciCevaplari = {};
+
+        // DOM elementleri
+        const sinavAlani = document.getElementById('sinavAlani');
+        const puanDegeri = document.getElementById('puanDegeri');
+        const dogruSayisi = document.getElementById('dogruSayisi');
+        const yanlisSayisi = document.getElementById('yanlisSayisi');
+        const bosSayisi = document.getElementById('bosSayisi');
+        const soruSayisi = document.getElementById('soruSayisi');
+        const secimBilgi = document.getElementById('secimBilgi');
+        const turBolumu = document.getElementById('turBolumu');
+        const yilBolumu = document.getElementById('yilBolumu');
+        
+        // Butonları seç
+        const dersBtns = document.querySelectorAll('.ders-btn');
+        const turBtns = document.querySelectorAll('.tur-btn');
+
+        // Accordion Menü İşlemleri
+        const accordionBtn = document.getElementById('jsonAccordionBtn');
+        const accordionContent = document.getElementById('jsonAccordionContent');
+
+        accordionBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            accordionContent.classList.toggle('show');
+            
+            // Ok işaretini döndür
+            const arrow = this.querySelector('.arrow');
+            if (accordionContent.classList.contains('show')) {
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // Ana Sayfaya Dön Fonksiyonu
+        function anaSayfayaDon() {
+            // Tüm seçimleri sıfırla
+            aktifDers = null;
+            aktifTur = null;
+            aktifYil = null;
+            kullaniciCevaplari = {};
+            
+            // Tüm active class'ları kaldır
+            dersBtns.forEach(b => b.classList.remove('active'));
+            turBtns.forEach(b => b.classList.remove('active'));
+            
+            // Menüleri gizle
+            turBolumu.style.display = 'none';
+            yilBolumu.style.display = 'none';
+            
+            // JSON accordion'u kapat
+            accordionContent.classList.remove('show');
+            accordionBtn.classList.remove('active');
+            const arrow = accordionBtn.querySelector('.arrow');
+            arrow.style.transform = 'rotate(0deg)';
+            
+            // Seçim bilgisini güncelle
+            secimBilgi.innerHTML = '👆 Lütfen bir ders seçin';
+            
+            // Soru alanını temizle
+            sinavAlani.innerHTML = '<div style="text-align: center; padding: 100px 20px; color: #999; background: #f8f9fa; border-radius: 8px; font-size: 18px;">👈 Sol menüden bir ders seçin<br><br>Sonra sınav türü ve yıl seçerek soruları görmeye başlayın</div>';
+            
+            // Puan ve istatistikleri sıfırla
+            puanDegeri.textContent = '0.00';
+            dogruSayisi.textContent = '0';
+            yanlisSayisi.textContent = '0';
+            bosSayisi.textContent = '0';
+            soruSayisi.textContent = '0 soru';
+        }
+
+        // Logo'ya tıklama olayı
+        document.getElementById('logo').addEventListener('click', function() {
+            anaSayfayaDon();
+        });
+
+        // Ana Sayfa butonuna tıklama olayı
+        document.getElementById('anasayfaBtn').addEventListener('click', function() {
+            anaSayfayaDon();
+        });
+
+        // Seçim bilgisini güncelle
+        function secimBilgiGuncelle() {
+            if (aktifDers === null) {
+                secimBilgi.innerHTML = '👆 Lütfen bir ders seçin';
+            } else if (aktifTur === null) {
+                secimBilgi.innerHTML = `📌 ${dersIsimleri[aktifDers]} > Sınav türü seçin`;
+            } else if (aktifYil === null) {
+                secimBilgi.innerHTML = `📌 ${dersIsimleri[aktifDers]} > ${turIsimleri[aktifTur]} > Yıl seçin`;
+            } else {
+                secimBilgi.innerHTML = `📌 ${dersIsimleri[aktifDers]} > ${turIsimleri[aktifTur]} > ${aktifYil}`;
+            }
+        }
+
+        // Yıl butonlarını güncelle - SADECE SEÇİLİ SINAV TÜRÜNE AİT YILLAR
+        function yilButonlariniGuncelle() {
+            const yilListesi = document.getElementById('yilListesi');
+            
+            // Mevcut yılları topla - SADECE seçili ders ve seçili sınav türü için
+            const mevcutYillar = new Set();
+            
+            // Varsayılan yıllar (her sınav türü için ayrı ayrı)
+            mevcutYillar.add('2023');
+            mevcutYillar.add('2024');
+            mevcutYillar.add('2025');
+            
+            // Veritabanındaki yılları ekle (SADECE seçili ders ve seçili sınav türü için)
+            if (aktifDers !== null && aktifTur !== null && 
+                soruDatabase[aktifDers] && soruDatabase[aktifDers][aktifTur]) {
+                Object.keys(soruDatabase[aktifDers][aktifTur]).forEach(yil => {
+                    mevcutYillar.add(yil);
+                });
+            }
+            
+            // Yılları sırala (büyükten küçüğe)
+            const yillar = Array.from(mevcutYillar).sort().reverse();
+            
+            let html = '';
+            yillar.forEach(yil => {
+                const aktifClass = (yil === aktifYil) ? 'active' : '';
+                html += `
+                    <button class="yil-btn ${aktifClass}" data-yil="${yil}">
+                        <div class="yil-icerik">
+                            <span class="yil-ad">${yil}</span>
+                            <span class="sil-btn" onclick="event.stopPropagation(); yilSil('${yil}')">🗑️</span>
+                        </div>
+                    </button>
+                `;
+            });
+            
+            html += `
+                <div class="yeni-yil-input">
+                    <input type="number" id="yeniYilInput" placeholder="Yeni yıl" min="2000" max="2030">
+                    <button class="btn" id="yilEkleBtn">➕ Ekle</button>
+                </div>
+            `;
+            
+            yilListesi.innerHTML = html;
+            
+            // Yıl butonlarına olay dinleyici ekle
+            document.querySelectorAll('.yil-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Sil butonuna tıklandıysa işlem yapma
+                    if (e.target.classList.contains('sil-btn')) return;
+                    
+                    document.querySelectorAll('.yil-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    aktifYil = this.getAttribute('data-yil');
+                    kullaniciCevaplari = {};
+                    secimBilgiGuncelle();
+                    sorulariGoster();
+                });
+            });
+            
+            // Yıl ekle butonuna olay dinleyici ekle
+            document.getElementById('yilEkleBtn').addEventListener('click', function() {
+                const yeniYil = document.getElementById('yeniYilInput').value;
+                if (yeniYil && yeniYil.length === 4) {
+                    aktifYil = yeniYil;
+                    yilButonlariniGuncelle();
+                    kullaniciCevaplari = {};
+                    secimBilgiGuncelle();
+                    sorulariGoster();
+                }
+            });
+        }
+
+        // Yıl silme fonksiyonu
+        window.yilSil = function(yil) {
+            if (aktifDers === null || aktifTur === null) {
+                alert('Önce bir ders ve sınav türü seçmelisiniz!');
+                return;
+            }
+            
+            if (confirm(`${yil} yılını silmek istediğinize emin misiniz?`)) {
+                // Veritabanından yılı sil
+                if (soruDatabase[aktifDers] && 
+                    soruDatabase[aktifDers][aktifTur] && 
+                    soruDatabase[aktifDers][aktifTur][yil]) {
+                    
+                    delete soruDatabase[aktifDers][aktifTur][yil];
+                    verileriLocalStorageaKaydet();
+                    
+                    // Eğer silinen yıl aktifse, aktifYil'i null yap
+                    if (aktifYil === yil) {
+                        aktifYil = null;
+                    }
+                    
+                    // Yıl butonlarını güncelle
+                    yilButonlariniGuncelle();
+                    sorulariGoster();
+                    
+                    alert(`${yil} yılı başarıyla silindi!`);
+                } else {
+                    alert('Bu yıl zaten boş!');
+                }
+            }
+        };
+
+        // Ders butonları için olay dinleyici
+        dersBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Tüm ders butonlarının active class'ını kaldır
+                dersBtns.forEach(b => b.classList.remove('active'));
+                // Bu butona active ekle
+                this.classList.add('active');
+                
+                // Seçimi güncelle
+                aktifDers = parseInt(this.getAttribute('data-ders'));
+                aktifTur = null;
+                aktifYil = null;
+                kullaniciCevaplari = {};
+                
+                // Sınav türü bölümünü göster
+                turBolumu.style.display = 'block';
+                yilBolumu.style.display = 'none';
+                
+                // Tüm tur butonlarının active class'ını kaldır
+                turBtns.forEach(b => b.classList.remove('active'));
+                
+                secimBilgiGuncelle();
+                sorulariGoster();
+            });
+        });
+
+        // Sınav türü butonları için olay dinleyici
+        turBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (aktifDers === null) {
+                    alert('Önce bir ders seçmelisiniz!');
+                    return;
+                }
+                
+                turBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                aktifTur = this.getAttribute('data-tur');
+                aktifYil = null;
+                kullaniciCevaplari = {};
+                
+                // Yıl bölümünü göster
+                yilBolumu.style.display = 'block';
+                
+                secimBilgiGuncelle();
+                yilButonlariniGuncelle();
+                sorulariGoster();
+            });
+        });
+
+        // Sınavı sıfırla butonu
+        document.getElementById('sinaviSifirla').addEventListener('click', function() {
+            if (aktifDers === null || aktifTur === null || aktifYil === null) {
+                alert('Önce bir ders, sınav türü ve yıl seçmelisiniz!');
+                return;
+            }
+            kullaniciCevaplari = {};
+            sorulariGoster();
+        });
+
+        // Soruları temizle butonu
+        document.getElementById('sorulariTemizle').addEventListener('click', function() {
+            if (aktifDers === null || aktifTur === null || aktifYil === null) {
+                alert('Önce bir ders, sınav türü ve yıl seçmelisiniz!');
+                return;
+            }
+            
+            if (confirm('Bu sınavdaki tüm soruları silmek istediğinize emin misiniz?')) {
+                if (!soruDatabase[aktifDers]) {
+                    soruDatabase[aktifDers] = {vize: {}, final: {}, but: {}};
+                }
+                if (!soruDatabase[aktifDers][aktifTur]) {
+                    soruDatabase[aktifDers][aktifTur] = {};
+                }
+                
+                soruDatabase[aktifDers][aktifTur][aktifYil] = [];
+                kullaniciCevaplari = {};
+                yilButonlariniGuncelle();
+                sorulariGoster();
+                verileriLocalStorageaKaydet();
+            }
+        });
+
+        // Tüm verileri temizle butonu
+        document.getElementById('verileriTemizle').addEventListener('click', function() {
+            if (confirm('TÜM derslerdeki TÜM soruları silmek istediğinize emin misiniz? Bu işlem geri alınamaz!')) {
+                soruDatabase = JSON.parse(JSON.stringify(baslangicVerileri));
+                kullaniciCevaplari = {};
+                verileriLocalStorageaKaydet();
+                
+                // Seçimleri sıfırla
+                anaSayfayaDon();
+                
+                alert('Tüm veriler sıfırlandı!');
+            }
+        });
+
+        // Verileri kaydet butonu
+        document.getElementById('verileriKaydet').addEventListener('click', function() {
+            verileriLocalStorageaKaydet();
+            alert('Veriler başarıyla kaydedildi!');
+        });
+
+        // Verileri yükle butonu
+        document.getElementById('verileriYukle').addEventListener('click', function() {
+            verileriLocalStoragedanYukle();
+            
+            // Seçimleri sıfırla (çünkü yeni veriler yüklendi)
+            anaSayfayaDon();
+            
+            alert('Kayıtlı veriler yüklendi!');
+        });
+
+        // Örnek JSON göster/gizle
+        document.getElementById('ornekGosterBtn').addEventListener('click', function() {
+            const ornekJson = document.getElementById('ornekJson');
+            if (ornekJson.style.display === 'none') {
+                ornekJson.style.display = 'block';
+                this.textContent = '📋 Örnek JSON Gizle';
+            } else {
+                ornekJson.style.display = 'none';
+                this.textContent = '📋 Örnek JSON Göster';
+            }
+        });
+
+        // JSON yükle butonu
+        document.getElementById('jsonYukleBtn').addEventListener('click', function() {
+            const dosya = document.getElementById('jsonDosya').files[0];
+            if (!dosya) {
+                alert('Lütfen bir JSON dosyası seçin!');
+                return;
+            }
+            
+            const ders = document.getElementById('dersSecim').value;
+            const tur = document.getElementById('turSecim').value;
+            const yil = document.getElementById('yilInput').value;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const sorular = JSON.parse(e.target.result);
+                    
+                    // Kontrol: dizi mi?
+                    if (!Array.isArray(sorular)) {
+                        alert('JSON dosyası bir dizi içermelidir!');
+                        return;
+                    }
+                    
+                    // Her sorunun gerekli alanları var mı?
+                    for (let i = 0; i < sorular.length; i++) {
+                        if (!sorular[i].soru || !sorular[i].cevaplar || !sorular[i].dogru) {
+                            alert(`${i+1}. soruda eksik alan var! Her soru 'soru', 'cevaplar' ve 'dogru' alanlarını içermeli.`);
+                            return;
+                        }
+                        
+                        if (!Array.isArray(sorular[i].cevaplar) || sorular[i].cevaplar.length !== 5) {
+                            alert(`${i+1}. soruda 'cevaplar' 5 şıktan oluşan bir dizi olmalı!`);
+                            return;
+                        }
+                    }
+                    
+                    // Veritabanını kontrol et ve oluştur
+                    if (!soruDatabase[ders]) {
+                        soruDatabase[ders] = {vize: {}, final: {}, but: {}};
+                    }
+                    
+                    if (!soruDatabase[ders][tur]) {
+                        soruDatabase[ders][tur] = {};
+                    }
+                    
+                    // Soruları yükle
+                    soruDatabase[ders][tur][yil] = sorular;
+                    
+                    // Local Storage'a kaydet
+                    verileriLocalStorageaKaydet();
+                    
+                    alert(`${sorular.length} soru başarıyla yüklendi ve kalıcı olarak kaydedildi!`);
+                    
+                } catch (error) {
+                    alert('JSON dosyası geçersiz! Hata: ' + error.message);
+                    console.error('Hata:', error);
+                }
+            };
+            
+            reader.readAsText(dosya);
+        });
+
+        // Soruları göster
+        function sorulariGoster() {
+            // Eğer ders, tur veya yıl seçili değilse boş göster
+            if (aktifDers === null || aktifTur === null || aktifYil === null) {
+                sinavAlani.innerHTML = '<div style="text-align: center; padding: 100px 20px; color: #999; background: #f8f9fa; border-radius: 8px; font-size: 18px;">👈 Sol menüden seçim yapın<br><br>Önce ders, sonra sınav türü, sonra yıl seçin</div>';
+                puanDegeri.textContent = '0.00';
+                dogruSayisi.textContent = '0';
+                yanlisSayisi.textContent = '0';
+                bosSayisi.textContent = '0';
+                soruSayisi.textContent = '0 soru';
+                return;
+            }
+            
+            // Seçili ders, tur ve yıla ait soruları al
+            let sorular = [];
+            
+            try {
+                if (soruDatabase[aktifDers] && 
+                    soruDatabase[aktifDers][aktifTur] && 
+                    soruDatabase[aktifDers][aktifTur][aktifYil]) {
+                    sorular = soruDatabase[aktifDers][aktifTur][aktifYil];
+                }
+            } catch (e) {
+                console.error('Hata:', e);
+                sorular = [];
+            }
+            
+            // Soru sayısını güncelle
+            soruSayisi.textContent = `${sorular.length} soru`;
+            
+            // Eğer soru yoksa bilgi mesajı göster
+            if (!sorular || sorular.length === 0) {
+                sinavAlani.innerHTML = '<div style="text-align: center; padding: 100px 20px; color: #999; background: #f8f9fa; border-radius: 8px; font-size: 18px;">📭 Bu sınav için henüz soru eklenmemiş.<br><br>Sol menüden JSON dosyası yükleyerek soru ekleyebilirsiniz.</div>';
+                puanDegeri.textContent = '0.00';
+                dogruSayisi.textContent = '0';
+                yanlisSayisi.textContent = '0';
+                bosSayisi.textContent = sorular.length;
+                return;
+            }
+
+            let html = '';
+
+            sorular.forEach((s, index) => {
+                const secilen = kullaniciCevaplari[index];
+                html += `<div class="soru-kutu" data-soru-index="${index}">`;
+                html += `<div class="soru-metni">${index+1}. ${s.soru}</div>`;
+                
+                s.cevaplar.forEach(cevap => {
+                    let cevapClass = 'cevap-satiri';
+                    
+                    if (secilen !== undefined) {
+                        if (cevap === s.dogru) {
+                            cevapClass += ' dogru';
+                        }
+                        if (secilen === cevap && secilen !== s.dogru) {
+                            cevapClass += ' yanlis';
+                        }
+                    }
+                    
+                    html += `<div class="${cevapClass}" data-soru="${index}" data-cevap="${cevap}">${cevap}</div>`;
+                });
+                
+                html += '</div>';
+            });
+
+            sinavAlani.innerHTML = html;
+
+            // Cevap satırlarına tıklama olayı ekle
+            document.querySelectorAll('.cevap-satiri').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    if (aktifDers === null || aktifTur === null || aktifYil === null) return;
+                    
+                    const soruIndex = this.getAttribute('data-soru');
+                    const cevap = this.getAttribute('data-cevap');
+                    cevapSec(soruIndex, cevap);
+                });
+            });
+
+            puanGuncelle(sorular);
+        }
+
+        // Cevap seç
+        function cevapSec(soruIndex, cevap) {
+            kullaniciCevaplari[soruIndex] = cevap;
+            sorulariGoster();
+        }
+
+        // Puan hesapla (4 yanlış 1 doğruyu götürür)
+        function puanHesapla(sorular) {
+            let dogru = 0;
+            let yanlis = 0;
+            let bos = 0;
+
+            sorular.forEach((soru, index) => {
+                const cevap = kullaniciCevaplari[index];
+                if (cevap) {
+                    if (cevap === soru.dogru) {
+                        dogru++;
+                    } else {
+                        yanlis++;
+                    }
+                } else {
+                    bos++;
+                }
+            });
+
+            // 4 yanlış 1 doğruyu götürür
+            const net = dogru - (yanlis / 4);
+            // Her soru 5 puan
+            const puan = net * 5;
+            
+            return {
+                puan: puan > 0 ? puan : 0,
+                dogru: dogru,
+                yanlis: yanlis,
+                bos: bos
+            };
+        }
+
+        // Puanı güncelle ve göster
+        function puanGuncelle(sorular) {
+            const sonuc = puanHesapla(sorular);
+            puanDegeri.textContent = sonuc.puan.toFixed(2);
+            dogruSayisi.textContent = sonuc.dogru;
+            yanlisSayisi.textContent = sonuc.yanlis;
+            bosSayisi.textContent = sonuc.bos;
+        }
+
+        // İlk yüklemede - hiçbir şey seçili değil
+        secimBilgiGuncelle();
+        // Sınav türü ve yıl bölümleri gizli
+        turBolumu.style.display = 'none';
+        yilBolumu.style.display = 'none';
+    </script>
+</body>
+</html>
